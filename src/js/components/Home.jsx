@@ -1,19 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //create your first component
 const Home = () => {
 
-	const [todoList, setTodoList] = useState([])
+	const url = 'https://playground.4geeks.com/todo'
 
+	const [todoList, setTodoList] = useState([])
 	const [tarea, setTarea] = useState("")
 
-	const tareaNueva = () => {
-		if (tarea.trim() == "") {
-			alert("Los campos no pueden estar vacios")
+	const nuevoUsuario = async () => {
+		const response = await fetch(`${url}/users/AgustinGauto`, {
+			method: "POST"
+		})
+		if (response.ok) {
+			traerTareas()
 		}
-		setTodoList([tarea, ...todoList])
-		setTarea("")
+		const data = await response.json()
+		console.log(data);
 	}
+
+	const traerTareas = async () => {
+		const response = await fetch(`${url}/users/AgustinGauto`)
+		if (!response.ok) {
+			console.log("usuario no existe");
+			nuevoUsuario()
+			return
+
+		}
+		const data = await response.json()
+		setTodoList(data.todos)
+	}
+
+	const tareaNueva = async() => {
+		if (tarea.trim()== "") return
+		const response = await fetch(`${url}/todos/AgustinGauto`, {
+			method: "POST",
+			body: JSON.stringify({
+				"label": tarea,
+				"is_done": false
+			}),
+			headers: {"Content-type": "application/json"}
+		})
+		if (response.ok) traerTareas(); setTarea("")
+	}
+
 
 	const enterK = (e) => {
 		if (e.key == "Enter") {
@@ -22,39 +52,60 @@ const Home = () => {
 	}
 
 
-	const eliminar = (ia) => {
-		const borrar = todoList.filter((item, i) => i !== ia);
-		setTodoList(borrar);
+	const eliminar =async (id) => {
+		const response = await fetch(`${url}/todos/${id}`, {
+			method: "DELETE"
+		})
+		if (response.ok) traerTareas()
 	}
+
+	useEffect(() => {
+		traerTareas()
+	}, [])
+
 
 	return (
 		<>
-			<div class="card position-absolute top-50 start-50 translate-middle" >
-				<div class="card-body">
-					<div className="text-center">
+			<div className="card position-absolute top-50 start-50 translate-middle" >
+				<div className="card-body">
+					<div classNameName="text-center">
 						<h1>Lista de Compras</h1>
-						<div className="input-group mb-3 mt-3 p-0">
-							<input onKeyUp={enterK} value={tarea} onChange={(e) => setTarea(e.target.value)} type="text" className="form-control" placeholder="ingresa aqui su compra" aria-label="ingresa aqui su compra" aria-describedby="button-addon2" />
-							<button className="btn btn-outline-secondary" type="button" id="Añadir" onClick={tareaNueva} >Agregar</button>
+						<div classNameName="input-group mb-3 mt-3 p-0">
+							<input
+								onKeyUp={enterK}
+								value={tarea}
+								onChange={(e) => setTarea(e.target.value)}
+								type="text" classNameName="form-control"
+								placeholder="ingresa aqui su compra"
+								aria-label="ingresa aqui su compra"
+								aria-describedby="button-addon2" />
+
+							<button
+								classNameName="btn btn-outline-secondary"
+								type="button" id="Añadir"
+								onClick={tareaNueva}
+							>
+								Agregar
+							</button>
 						</div>
 
-						<div className="text-center " style={{
-					maxHeight: "27em",
-					overflowY: "auto",
-					lineHeight: "1.5em",
-					textOverflow: "clip",
-					whiteSpace: "normal",
-				}}>
-							{ todoList.length > 0 ? (
+						<div classNameName="text-center " style={{
+							maxHeight: "27em",
+							overflowY: "auto",
+							lineHeight: "1.5em",
+							textOverflow: "clip",
+							whiteSpace: "normal",
+						}}>
+							{todoList.length > 0 ? (
 								todoList.map((item, i) => (
 									<div key={i}>
-										<div className="textoLista input-group d-flex justify-content-center d-flex justify-content-between">
-											<p className="textoListaVista">{item}</p>
-											<button className="btn m-0 eliminar" type="button" onClick={() => eliminar(i)}> <i class="fa-regular fa-trash-can"></i> </button>
+										<div classNameName="textoLista input-group d-flex justify-content-center d-flex justify-content-between">
+											<p classNameName="textoListaVista">{item}</p>
+											<button classNameName="btn m-0 eliminar" type="button" onClick={() => eliminar(i)}> <i className="fa-regular fa-trash-can"></i> </button>
 										</div>
 									</div>
-								)) 
-							) : (<p className="text-center position-absolute top-50 start-50 translate-middle fs-5">No hay ningun elemento en la lista</p>)
+								))
+							) : (<p classNameName="text-center position-absolute top-50 start-50 translate-middle fs-5">No hay ningun elemento en la lista</p>)
 							}
 						</div>
 					</div>
