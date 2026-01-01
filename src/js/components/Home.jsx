@@ -100,8 +100,8 @@ const Home = () => {
 								todoList.map((item, i) => (
 									<div key={i}>
 										<div classNameName="textoLista input-group d-flex justify-content-center d-flex justify-content-between">
-											<p classNameName="textoListaVista">{item}</p>
-											<button classNameName="btn m-0 eliminar" type="button" onClick={() => eliminar(i)}> <i className="fa-regular fa-trash-can"></i> </button>
+											<p classNameName="textoListaVista">{item.label}</p>
+											<button classNameName="btn m-0 eliminar" type="button" onClick={() => eliminar(tarea.id)}> <i className="fa-regular fa-trash-can"></i> </button>
 										</div>
 									</div>
 								))
