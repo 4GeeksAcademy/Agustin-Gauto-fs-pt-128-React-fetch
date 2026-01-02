@@ -25,7 +25,6 @@ const Home = () => {
 			console.log("usuario no existe");
 			nuevoUsuario()
 			return
-
 		}
 		const data = await response.json()
 		setTodoList(data.todos)
@@ -68,20 +67,20 @@ const Home = () => {
 		<>
 			<div className="card position-absolute top-50 start-50 translate-middle" >
 				<div className="card-body">
-					<div classNameName="text-center">
+					<div className="text-center">
 						<h1>Lista de Compras</h1>
-						<div classNameName="input-group mb-3 mt-3 p-0">
+						<div className="input-group mb-3 mt-3 p-0">
 							<input
 								onKeyUp={enterK}
 								value={tarea}
 								onChange={(e) => setTarea(e.target.value)}
-								type="text" classNameName="form-control"
+								type="text" className="form-control"
 								placeholder="ingresa aqui su compra"
 								aria-label="ingresa aqui su compra"
 								aria-describedby="button-addon2" />
 
 							<button
-								classNameName="btn btn-outline-secondary"
+								className="btn btn-outline-secondary"
 								type="button" id="Añadir"
 								onClick={tareaNueva}
 							>
@@ -89,7 +88,7 @@ const Home = () => {
 							</button>
 						</div>
 
-						<div classNameName="text-center " style={{
+						<div className="text-center " style={{
 							maxHeight: "27em",
 							overflowY: "auto",
 							lineHeight: "1.5em",
@@ -99,13 +98,16 @@ const Home = () => {
 							{todoList.length > 0 ? (
 								todoList.map((item, i) => (
 									<div key={i}>
-										<div classNameName="textoLista input-group d-flex justify-content-center d-flex justify-content-between">
-											<p classNameName="textoListaVista">{item.label}</p>
-											<button classNameName="btn m-0 eliminar" type="button" onClick={() => eliminar(tarea.id)}> <i className="fa-regular fa-trash-can"></i> </button>
+										<div className="textoLista input-group d-flex justify-content-center d-flex justify-content-between">
+											<p className="textoListaVista">{item.label}</p>
+											<button 
+											className="btn m-0 eliminar" 
+											type="button" onClick={() => eliminar(item.id)}
+											> <i className="fa-regular fa-trash-can"></i> </button>
 										</div>
 									</div>
 								))
-							) : (<p classNameName="text-center position-absolute top-50 start-50 translate-middle fs-5">No hay ningun elemento en la lista</p>)
+							) : (<p className="text-center position-absolute top-50 start-50 translate-middle fs-5">No hay ningun elemento en la lista</p>)
 							}
 						</div>
 					</div>
